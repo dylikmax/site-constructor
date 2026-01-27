@@ -1,20 +1,31 @@
+import { useDispatch } from "react-redux";
 import type { Body } from "../../../elements"
 import { FieldElement } from "./FieldElement"
+import { selectElement } from "../../../redux/slices/editor.slice";
 
 interface Props {
-    element: Body
+    element: Body;
 }
 
 export const BodyElement = ({ element } : Props) => {
-    console.log(element);
+    const dispatch = useDispatch()
+
+    const handleClick = () => dispatch(selectElement(null));
     
     return <div 
         className="h-full flex flex-col gap-2"
         style={{
             backgroundColor: element.background
-        }}>
+        }}
+        onClick={handleClick}
+        >
             {
-                element.content.map(el => <FieldElement element={el}/>)
+                element.content.map((el, i) => <FieldElement 
+                    element={el} 
+                    key={el.uuid}
+                    parentUuid={element.uuid}
+                    index={i}
+                />)
             }
     </div>
 }

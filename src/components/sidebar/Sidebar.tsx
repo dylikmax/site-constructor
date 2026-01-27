@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { LayersIcon, PlusIcon } from "../../assets/icons"
+import { LayersIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
 import { CategoryButton } from "./CategoryButton";
 import type { Category } from "./category.interface";
-import { BaseCategory, Components, Layers } from "./categories";
+import { BaseCategory, Components, Layers, Settings } from "./categories";
 
 const categories : Category[] = [
     {
@@ -11,11 +11,17 @@ const categories : Category[] = [
         icon: <PlusIcon color="white"/>,
         element: <Components/>
     },
-        {
+    {
         name: "Layers",
-        description: "All to manage your current layers.",
+        description: "Drag layers and drop it to change its order.",
         icon: <LayersIcon color="white"/>,
         element: <Layers/>
+    },
+    {
+        name: "Settings",
+        description: "Customize your element like you want by a lot of parameters.",
+        icon: <SettingsIcon color="white"/>,
+        element: <Settings/>
     }
 ]
 

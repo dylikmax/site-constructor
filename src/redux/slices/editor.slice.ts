@@ -2,7 +2,8 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { EditorElement, Body, Container, Text } from "../../elements";
 
 interface EditorState {
-    bodyElement: Body
+    bodyElement: Body;
+    selectedElement: EditorElement | null;
 }
 
 const initialState : EditorState = {
@@ -63,7 +64,8 @@ const initialState : EditorState = {
             } as Text
         ],
         background: "#000000"
-    }
+    },
+    selectedElement: null
 }
 
 interface AddMoveElementPayload {
@@ -128,6 +130,25 @@ const deleteElementRecursive = (element: EditorElement, action: PayloadAction<Ed
     return element;
 }
 
+const selectElementRecursive = (element: EditorElement, action: PayloadAction<EditorElement | null>): EditorElement | null => {
+    {
+        if (element.uuid === action.payload?.uuid) {
+            return element;
+        }
+        
+        if ("content" in element && Array.isArray(element.content)) {
+            for (const child of element.content) {
+                const found = selectElementRecursive(child, action);
+                if (found !== null) {
+                    return found;
+                }
+            }
+        }
+        
+        return null;
+    };
+    }
+
 export const editorSlice = createSlice({
     name: 'editor',
     initialState,
@@ -157,9 +178,18 @@ export const editorSlice = createSlice({
                     type: 'editor/addElement' 
                 }
             ) as Body;
+        },
+        selectElement: (state, action: PayloadAction<EditorElement | null>) => {
+            state.selectedElement = selectElementRecursive(state.bodyElement, action);
         }
     }
 });
 
-export const { addElement, editElement, deleteElement, moveElement } = editorSlice.actions;
+export const { 
+    addElement, 
+    editElement, 
+    deleteElement, 
+    moveElement, 
+    selectElement
+} = editorSlice.actions;
 export default editorSlice.reducer;

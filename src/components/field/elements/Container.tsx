@@ -7,13 +7,19 @@ interface Props {
 
 export const ContainerElement = ({ element } : Props) => {
     return <div 
-        className="border-dashed border-2 border-gray-800 p-3 flex flex-col gap-2"
+        className="p-3 flex flex-col gap-2"
         style={{
             backgroundColor: element.background,
             minHeight: 50
-        }}>
+        }}
+        >
             {
-                element.content.map(el => <FieldElement element={el}/>)
+                element.content.map((el, i) => <FieldElement 
+                    element={el} 
+                    key={el.uuid}
+                    parentUuid={element.uuid}
+                    index={i}
+                />)
             }
     </div>
 }
