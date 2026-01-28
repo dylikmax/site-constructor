@@ -20,7 +20,7 @@ const initialState : EditorState = {
                         uuid: "4",
                         name: "4",
                         type: "text",
-                        content: "super text",
+                        content: "text 1",
                         size: 16,
                         align: "center",
                         color: "#242424"
@@ -34,7 +34,7 @@ const initialState : EditorState = {
                                 uuid: "228",
                                 name: "228",
                                 type: "text",
-                                content: "super text",
+                                content: "text 2",
                                 size: 24,
                                 align: "left",
                                 color: "#FFFFFF"
@@ -43,7 +43,7 @@ const initialState : EditorState = {
                                 uuid: "229",
                                 name: "229",
                                 type: "text",
-                                content: "super text",
+                                content: "text 3",
                                 size: 12,
                                 align: "center",
                                 color: "#FFFFFF"
@@ -57,7 +57,7 @@ const initialState : EditorState = {
                 uuid: "3",
                 name: "3",
                 type: "text",
-                content: "text sddsjsd",
+                content: "text 4",
                 size: 16,
                 align: "right",
                 color: "#FFFFFF"
