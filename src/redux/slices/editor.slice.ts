@@ -163,7 +163,7 @@ export const editorSlice = createSlice({
             state.bodyElement = deleteElementRecursive(state.bodyElement, action) as Body;
         },
         moveElement: (state, action: PayloadAction<AddMoveElementPayload>) => {
-            state.bodyElement = deleteElementRecursive(
+            const newBody = deleteElementRecursive(
                 state.bodyElement, 
                 { 
                     payload: action.payload.element,
@@ -172,7 +172,7 @@ export const editorSlice = createSlice({
             ) as Body;
             
             state.bodyElement = addElementRecursive(
-                state.bodyElement, 
+                newBody, 
                 { 
                     payload: action.payload,
                     type: 'editor/addElement' 

@@ -4,9 +4,9 @@ import { Field } from './components/field'
 
 function App() {
 
-  return <div className='min-h-screen flex flex-col text-gray-50'>
+  return <div className='h-screen flex flex-col text-gray-50'>
     <Header/>
-    <div className='flex flex-1'>
+    <div className='flex flex-1 overflow-hidden'>
       <Sidebar/>
       <Field/>
     </div>

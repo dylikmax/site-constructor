@@ -13,13 +13,13 @@ export const ContainerElement = ({ element } : Props) => {
             minHeight: 50
         }}
         >
-            {
-                element.content.map((el, i) => <FieldElement 
-                    element={el} 
-                    key={el.uuid}
-                    parentUuid={element.uuid}
-                    index={i}
-                />)
-            }
+        {
+            element.content.map((el, i) => <FieldElement 
+                element={el} 
+                key={el.uuid}
+                parentUuid={element.uuid}
+                index={i}
+            />)
+        }
     </div>
 }

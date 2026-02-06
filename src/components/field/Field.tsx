@@ -5,7 +5,7 @@ import { FieldElement } from "./elements"
 export const Field = () => {
     const body = useSelector((state: RootState) => state.editor.bodyElement)
 
-    return <div className="w-full">
+    return <div className="w-full min-h-0">
         <FieldElement element={body} parentUuid={body.uuid} index={0}/>
     </div>
 }
