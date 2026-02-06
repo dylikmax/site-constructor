@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
-import type { Body, Container, EditorElement, Text } from "../../../elements"
+import { createElement, type Body, type Container, type EditorElement, type Text } from "../../../elements"
 import { BodyElement } from "./Body"
 import { ContainerElement } from "./Container"
 import { TextElement } from "./Text"
 import { addElement, type RootState } from "../../../redux"
-import { v4 as uuidv4 } from "uuid"
 import { deleteElement, moveElement, selectElement } from "../../../redux/slices/editor.slice"
 import clsx from "clsx"
 import { useRef } from "react"
@@ -14,32 +13,6 @@ interface Props {
     element: EditorElement;
     parentUuid: string;
     index: number;
-}
-
-const createElement = (type: string) : EditorElement | null => {
-    switch(type) {
-        case "container":
-            return {
-                uuid: uuidv4(),
-                type: "container",
-                name: "Container",
-                columns: 1,
-                content: [],
-                background: "#FFFFFF"
-            } as Container
-        case "text":
-            return {
-                uuid: uuidv4(),
-                type: "text",
-                name: "Text",
-                content: "Text Placeholder",
-                color: "#000000",
-                size: 16,
-                align: "left"
-            } as Text
-        default:
-            return null;
-    }
 }
 
 export const FieldElement = ({ element, parentUuid, index } : Props) => {
@@ -77,10 +50,20 @@ export const FieldElement = ({ element, parentUuid, index } : Props) => {
         if (!type) {
             const draggedElement = JSON.parse(e.dataTransfer.getData('application/elements'));
 
+            if ("content" in element && Array.isArray(element.content)) {
+                dispatch(moveElement({ element: draggedElement, parentUuid: element.uuid }));
+                return;
+            }
+
             dispatch(moveElement({ element: draggedElement, parentUuid, index }))
         } else {
             const newElement = createElement(type);
             if (!newElement) {
+                return;
+            }
+
+            if ("content" in element && Array.isArray(element.content)) {
+                dispatch(addElement({ element: newElement, parentUuid: element.uuid }));
                 return;
             }
 
@@ -102,12 +85,18 @@ export const FieldElement = ({ element, parentUuid, index } : Props) => {
     }
 
     if (element.type === "body") {
-        return <BodyElement element={element as Body}/>;
+        return <div 
+            className="h-full overflow-y-auto"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDrop}
+        >
+            <BodyElement element={element as Body}/>
+        </div>
     }
 
     return <div className="relative">
         {isActive ? <div 
-            className="bg-blue-600 w-min p-1 rounded-t absolute -top-[27px] -left-[1px] cursor-pointer"
+            className="bg-blue-600 w-min p-1 rounded-t absolute -left-[1px] cursor-pointer -translate-y-full"
             onClick={handleTrashClick}
         >
             <TrashIcon size={20} color={"white"}/>

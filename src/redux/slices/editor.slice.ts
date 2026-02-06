@@ -6,6 +6,10 @@ interface EditorState {
     selectedElement: EditorElement | null;
 }
 
+type Result<T> = 
+    | { success: true, value: T }
+    | { success: false }
+
 const initialState : EditorState = {
     bodyElement: {
         uuid: "1",
@@ -74,7 +78,10 @@ interface AddMoveElementPayload {
     index?: number;
 }
 
-const addElementRecursive = (element: EditorElement, action: PayloadAction<AddMoveElementPayload>): EditorElement => {
+const addElementRecursive = (
+    element: EditorElement, 
+    action: PayloadAction<AddMoveElementPayload>
+): Result<EditorElement> => {
     if (element.uuid === action.payload.parentUuid && "content" in element && Array.isArray(element.content)) {
         const { element: newElement, index } = action.payload;
         const currentContent = element.content;
@@ -91,17 +98,35 @@ const addElementRecursive = (element: EditorElement, action: PayloadAction<AddMo
             newContent = [...currentContent, newElement];
         }
 
-        return {
-            ...element,
-            content: newContent
+        return { 
+            success: true,
+            value: {
+                ...element,
+                content: newContent
+            }
         };
     } else if ("content" in element && Array.isArray(element.content)) {
-        return {
-            ...element,
-            content: element.content.map(child => addElementRecursive(child, action))
-        };
+        const contentResults = element.content.map(child => addElementRecursive(child, action));
+
+        const addedIndex = contentResults.findIndex(r => r.success);
+
+        if (addedIndex !== -1) {
+            const newContent = element.content.map((child, i) => 
+              contentResults[i].success 
+                ? contentResults[i].value
+                : child
+            );
+
+            return {
+              success: true,
+              value: {
+                ...element,
+                content: newContent
+              }
+            };
+        }
     }
-    return element;
+    return { success: false };
 }
 
 const editElementRecursive = (element: EditorElement, action: PayloadAction<EditorElement>): EditorElement => {
@@ -154,13 +179,19 @@ export const editorSlice = createSlice({
     initialState,
     reducers: {
         addElement: (state, action: PayloadAction<AddMoveElementPayload>) => {
-            state.bodyElement = addElementRecursive(state.bodyElement, action) as Body;
+            const result = addElementRecursive(state.bodyElement, action);
+            if (!result.success) {
+                return;
+            }
+
+            state.bodyElement = result.value as Body
         },
         editElement: (state, action: PayloadAction<EditorElement>) => {
             state.bodyElement = editElementRecursive(state.bodyElement, action) as Body;
         },
         deleteElement: (state, action: PayloadAction<EditorElement>) => {
             state.bodyElement = deleteElementRecursive(state.bodyElement, action) as Body;
+            state.selectedElement = null;
         },
         moveElement: (state, action: PayloadAction<AddMoveElementPayload>) => {
             const newBody = deleteElementRecursive(
@@ -171,13 +202,19 @@ export const editorSlice = createSlice({
                 }
             ) as Body;
             
-            state.bodyElement = addElementRecursive(
+            const addResult = addElementRecursive(
                 newBody, 
                 { 
                     payload: action.payload,
                     type: 'editor/addElement' 
                 }
-            ) as Body;
+            );
+
+            if (!addResult.success) {
+                return;
+            }
+
+            state.bodyElement = addResult.value as Body;
         },
         selectElement: (state, action: PayloadAction<EditorElement | null>) => {
             state.selectedElement = selectElementRecursive(state.bodyElement, action);

@@ -79,7 +79,7 @@ export const LayerElement = ({ element, parentElement, index } : Props) => {
         dispatch(moveElement({ element: draggedItem, parentUuid: parentElement.uuid, index }));
     }
 
-    const icon = elementIcons("white", ICON_SIZE)[element.type as keyof ReturnType<typeof elementIcons>] || <></>
+    const icon = elementIcons("white", ICON_SIZE)[element.type as keyof typeof elementIcons] || <></>
 
     return <div className={clsx("flex flex-col gap-2 rounded-lg pl-3 pt-2", {
         "pb-0": "content" in element && Array.isArray(element.content) && element.content.length,
