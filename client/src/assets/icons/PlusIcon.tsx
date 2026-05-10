@@ -1,0 +1,7 @@
+import type { IconProps } from "./icon-props.interface"
+
+export const PlusIcon = ({size, color, className} : IconProps) => {
+    return <svg width={size} height={size} className={className} viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.5 17.5H32.5M17.5 2.5V32.5" stroke={color} stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+}

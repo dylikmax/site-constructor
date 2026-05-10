@@ -1,0 +1,25 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class Project {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column({
+    unique: true,
+  })
+  url: string;
+
+  @Column({
+    default: true,
+  })
+  isActive: boolean;
+
+  @Column({
+    type: 'json',
+  })
+  tree: Record<string, any>;
+}
