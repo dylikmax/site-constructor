@@ -8,12 +8,14 @@ import { Project } from './projects.entity';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { StaticPageGeneratorService } from 'src/static-page-generator/static-page-generator.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectRepository(Project)
     private projectsRepository: Repository<Project>,
+    private readonly pageGenerator: StaticPageGeneratorService,
   ) {}
 
   getList(): Promise<Project[]> {
@@ -40,25 +42,21 @@ export class ProjectsService {
 
   async update(id: number, dto: UpdateProjectDto): Promise<Project> {
     const project = await this.projectsRepository.findOneBy({ id });
-    if (!project) {
-      throw new NotFoundException(`Project with ID ${id} not found`);
-    }
+    if (!project) throw new NotFoundException(`Проект с ID ${id} не найден`);
 
     if (dto.name !== undefined) project.name = dto.name;
     if (dto.url !== undefined) project.url = dto.url;
     if (dto.isActive !== undefined) project.isActive = dto.isActive;
     if (dto.tree !== undefined) project.tree = dto.tree;
 
-    try {
-      return await this.projectsRepository.save(project);
-    } catch (error) {
-      if (error.code === 'ER_DUP_ENTRY') {
-        throw new BadRequestException(`
-          URL "${dto.url}" already busy with another project
-          `);
-      }
-      throw error;
+    const updatedProject = await this.projectsRepository.save(project);
+
+    // 🌐 Генерируем статику после успешного сохранения
+    if (updatedProject.isActive) {
+      this.pageGenerator.generatePage(updatedProject.url, updatedProject.tree, updatedProject.name);
     }
+
+    return updatedProject;
   }
 
   async delete(id: number): Promise<void> {

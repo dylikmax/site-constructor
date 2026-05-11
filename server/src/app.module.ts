@@ -6,6 +6,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AttachmentsModule } from './attachments/attachments.module';
 import { Attachment } from './attachments/attachment.entity';
+import { StaticPageGeneratorService } from './static-page-generator/static-page-generator.service';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { Attachment } from './attachments/attachment.entity';
     AttachmentsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [StaticPageGeneratorService],
 })
 export class AppModule {}

@@ -3,10 +3,11 @@ import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Project } from './projects.entity';
+import { StaticPageGeneratorService } from 'src/static-page-generator/static-page-generator.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Project])],
   controllers: [ProjectsController],
-  providers: [ProjectsService],
+  providers: [ProjectsService, StaticPageGeneratorService],
 })
 export class ProjectsModule {}
