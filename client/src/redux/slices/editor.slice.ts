@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import type { EditorElement, Body } from "../../elements";
 import { api } from "../../api/client";
+import type { ProjectInterface } from "../../projects/project.interface";
 
 interface ProjectApiResponse {
   id: number;
@@ -19,9 +20,7 @@ interface EditorState {
   selectedElement: EditorElement | null;
   isLoading: boolean;
   error: string | null;
-  name: string;
-  url: string;
-  isActive: boolean;
+  project: ProjectInterface
 }
 
 type Result<T> = { success: true; value: T } | { success: false };
@@ -37,9 +36,10 @@ const initialState: EditorState = {
   selectedElement: null,
   isLoading: false,
   error: null,
-  name: "",
-  isActive: false,
-  url: "",
+  project: {
+    name: "",
+    isActive: false,
+    url: "",}
 };
 
 interface AddMoveElementPayload {
@@ -54,7 +54,6 @@ export const fetchProject = createAsyncThunk<
   { rejectValue: string }
 >("editor/fetchProject", async (projectId, { rejectWithValue }) => {
   try {
-    // Axios автоматически распарсит JSON и типизирует data
     const { data } = await api.get<ProjectApiResponse>(
       `/projects/${projectId}`,
     );
@@ -230,11 +229,11 @@ export const editorSlice = createSlice({
       state,
       action: PayloadAction<{ name?: string; url?: string }>,
     ) => {
-      if (action.payload.name !== undefined) state.name = action.payload.name;
-      if (action.payload.url !== undefined) state.url = action.payload.url;
+      if (action.payload.name !== undefined) state.project.name = action.payload.name;
+      if (action.payload.url !== undefined) state.project.url = action.payload.url;
     },
     changeAccess: (state) => {
-      state.isActive = !state.isActive;
+      state.project.isActive = !state.project.isActive;
     },
   },
   extraReducers: (builder) => {
@@ -247,12 +246,11 @@ export const editorSlice = createSlice({
         state.isLoading = false;
         state.error = null;
 
-        // ✅ Маппинг ответа бэкенда в поля стейта
-        state.name = action.payload.name;
-        state.url = action.payload.url;
-        state.isActive = action.payload.isActive;
+        state.project.name = action.payload.name;
+        state.project.url = action.payload.url;
+        state.project.isActive = action.payload.isActive;
         state.bodyElement = action.payload.tree;
-        state.selectedElement = null; // Сброс выделения при загрузке нового проекта
+        state.selectedElement = null;
       })
       .addCase(fetchProject.rejected, (state, action) => {
         state.isLoading = false;
