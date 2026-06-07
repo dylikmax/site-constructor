@@ -69,7 +69,7 @@ export const Header = () => {
   };
 
   return (
-    <div className="bg-gray-900 py-3 relative flex z-10 justify-between px-6">
+    <div className="bg-gray-900 py-3 relative flex justify-between px-6">
       <NavLink
         to="/projects"
         className="flex items-center gap-1 bg-gray-700 rounded-lg p-1 w-36 hover:duration-100 hover:bg-gray-800"

@@ -94,7 +94,7 @@ export const FieldElement = ({ element, parentUuid, index } : Props) => {
         </div>
     }
 
-    return <div className="relative min-h-0 min-w-0 flex flex-col">
+    return <div className="relative min-w-0 flex flex-col">
         {isActive ? <div 
             className="bg-blue-600 w-min p-1 rounded-t absolute -left-[1.5px] cursor-pointer -translate-y-full z-50"
             onClick={handleTrashClick}
@@ -102,7 +102,7 @@ export const FieldElement = ({ element, parentUuid, index } : Props) => {
             <TrashIcon size={20} color={"white"}/>
         </div> : <></>}
         <div 
-            className={clsx("min-h-0 min-w-0 flex-1", {
+            className={clsx("relative flex-1", {
                 "outline outline-2 outline-blue-600 outline-offset-[-1px] cursor-default": isActive,
                 "outline outline-1 outline-dashed outline-gray-800 cursor-pointer": !isActive
             })}

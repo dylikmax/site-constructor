@@ -13,9 +13,9 @@ export const BodyElement = ({ element } : Props) => {
     const handleClick = () => dispatch(selectElement(null));
     
     return <div 
-        className="flex-1 h-auto min-h-full min-w-0 flex flex-col gap-2"
+        className="flex-1 min-w-0 flex flex-col gap-2"
         style={{
-            backgroundColor: element.background
+            backgroundColor: element.background,
         }}
         onClick={handleClick}
         >

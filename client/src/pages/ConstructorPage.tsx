@@ -33,9 +33,9 @@ export const ConstructorPage = () => {
     )
   }
 
-  return <div className='h-screen flex flex-col text-gray-50 w-full'>
+  return <div className='h-screen flex flex-col text-gray-50 w-full overflow-hidden'>
       <Header/>
-      <div className='flex flex-1 overflow-y-auto overflow-x-hidden w-full relative z-10'>
+      <div className='flex flex-1 w-full relative overflow-hidden'>
         <Sidebar/>
         <Field/>
       </div>
