@@ -23,7 +23,8 @@ export const createElement = (type: string) : EditorElement | null => {
                 content: "Text",
                 color: "#000000",
                 size: 16,
-                align: "left"
+                align: "left",
+                font: "Arial"
             } as Text
         default:
             return null;

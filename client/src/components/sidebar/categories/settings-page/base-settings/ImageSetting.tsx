@@ -3,7 +3,6 @@ import { editElement, type RootState } from "../../../../../redux";
 import { useEffect, useState, useCallback } from "react";
 import { api } from "../../../../../api/client";
 
-// ⚠️ Укажите реальный адрес бэкенда (лучше вынести в .env: import.meta.env.VITE_BACKEND_URL)
 const BACKEND_URL = "http://localhost:3000";
 
 interface Attachment {
@@ -12,11 +11,6 @@ interface Attachment {
   originalName: string;
   mimeType: string;
 }
-
-const normalizeUrl = (url: string | null | undefined) => {
-  if (!url) return '';
-  return url.replace(/^https?:\/\/[^\/]+/, '');
-};
 
 interface Props {
   propName: string;

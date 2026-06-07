@@ -9,15 +9,17 @@ export const Layers = () => {
 
     const handleClick = () => dispatch(selectElement(null));
     
-    return <div 
-        className="flex flex-col gap-2 bg-gray-900 rounded-lg h-full overflow-x-hidden"
-        onClick={handleClick}
-    >
-        {body.content.map((el, i) => <LayerElement
-            element={el}
-            parentElement={body}
-            index={i}
-            key={el.uuid}
-        />)}
+    return <div className="flex bg-gray-900 overflow-y-hidden rounded-lg h-full">
+            <div 
+            className="flex flex-col gap-2 overflow-auto min-w-max w-full pb-10"
+            onClick={handleClick}
+        >
+            {body.content.map((el, i) => <LayerElement
+                element={el}
+                parentElement={body}
+                index={i}
+                key={el.uuid}
+            />)}
+        </div>
     </div>
 }

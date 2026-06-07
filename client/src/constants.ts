@@ -1,1 +1,1 @@
-export const SERVER_URL = "localhost:5000" as const;
+export const SERVER_URL = "localhost:3000" as const;

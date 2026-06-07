@@ -82,8 +82,8 @@ export const LayerElement = ({ element, parentElement, index } : Props) => {
     const icon = elementIcons("white", ICON_SIZE)[element.type as keyof typeof elementIcons] || <></>
 
     return <div className={clsx("flex flex-col gap-2 rounded-lg pl-3 pt-2", {
-        "pb-0": "content" in element && Array.isArray(element.content) && element.content.length,
-        "rounded-none border-t border-gray-600": parentElement.type !== "body",
+        "": "content" in element && Array.isArray(element.content) && element.content.length,
+        "rounded-none border-t border-gray-700": parentElement.type !== "body",
         "bg-inherit cursor-pointer": !isSelected,
         "bg-gray-700 cursor-default": isSelected
         }
@@ -95,12 +95,12 @@ export const LayerElement = ({ element, parentElement, index } : Props) => {
         onClick={handleClickLayer}
     >
 
-        <div className="flex justify-between items-center">
+        <div className="flex items-center">
 
             <div className="flex gap-2 items-center">
                 {icon}
                 <input 
-                    className="text-sm bg-inherit inline-block overflow-hidden w-auto pointer-events-auto" 
+                    className="text-sm bg-inherit inline-block overflow-hidden pointer-events-auto" 
                     value={name} 
                     onChange={handleChange}
                     onBlur={handleBlur}

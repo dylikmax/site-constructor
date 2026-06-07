@@ -8,7 +8,7 @@ const categories : Category[] = [
     {
         name: "Components",
         description: "Drag components from sidebar and drop to the canvas.",
-        icon: <PlusIcon color="white"/>,
+        icon: <PlusIcon color="white" />,
         element: <Components/>
     },
     {
@@ -38,7 +38,7 @@ export const Sidebar = () => {
         setOpenedPage(categories.find(category => category.name === name)!);
     }
 
-    return <div className='min-w-[350px] w-3/12 bg-gray-800 pr-2 flex gap-2 overflow-hidden'>
+    return <div className='min-w-[300px] w-2/12 bg-gray-800 pr-2 flex gap-2 overflow-hidden'>
         <div className="w-2/12 h-full bg-gray-700">
             {categories.map((category, i) => <CategoryButton
                 isActive={category.name === openedPage.name}

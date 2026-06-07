@@ -86,7 +86,7 @@ export const FieldElement = ({ element, parentUuid, index } : Props) => {
 
     if (element.type === "body") {
         return <div 
-            className="h-full overflow-y-auto"
+            className="h-full overflow-y-auto overflow-x-hidden"
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
         >
@@ -94,7 +94,7 @@ export const FieldElement = ({ element, parentUuid, index } : Props) => {
         </div>
     }
 
-    return <div className="relative min-w-0 flex flex-col">
+    return <div className="relative min-w-0 flex flex-col h-min">
         {isActive ? <div 
             className="bg-blue-600 w-min p-1 rounded-t absolute -left-[1.5px] cursor-pointer -translate-y-full z-50"
             onClick={handleTrashClick}

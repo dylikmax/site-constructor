@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { editElement, type RootState } from "../../../../../redux";
 import { useEffect, useState } from "react";
+import { BaseSetting } from "./BaseSetting";
 
 interface Props {
     from: number;
@@ -9,7 +10,7 @@ interface Props {
     title: string;
 }
 
-export const SizeSetting = ({ from, to, propName, title } : Props ) => {
+export const SizeSetting = ({ propName, title } : Props ) => {
     const element = useSelector((state: RootState) => state.editor.selectedElement)
 
     if (!element || !(propName in element)) {
@@ -18,37 +19,38 @@ export const SizeSetting = ({ from, to, propName, title } : Props ) => {
 
     const value = +element[propName as keyof typeof element]!
 
-    const [currentSize, setCurrentSize] = useState(value);
+    const [currentSize, setCurrentSize] = useState(String(value));
+    const [initialSize, setInitialSize] = useState(value)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setCurrentSize(value);
+        setCurrentSize(String(value));
+        setInitialSize(value);
     }, [element])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrentSize(+e.target.value);
+        setCurrentSize(e.target.value);
+    }
+
+    const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = +e.target.value;
+        if (Number.isNaN(value)) {
+            setCurrentSize(String(initialSize));
+            return;
+        }
+
+        setCurrentSize(String(value));
+        setInitialSize(value);
         dispatch(editElement({ ...element, [propName]: +e.target.value }))
     }
 
-    return <div className="bg-gray-800 p-2 rounded-lg flex flex-col gap-2">
-        <h4 className="text-lg font-bold">{title}</h4>
-        <div className="flex justify-between items-center">
-            {currentSize}
-            <input 
-                type="range"
-                className="w-10/12 cursor-pointer h-2 bg-gray-700 
-                    rounded appearance-none
-                    [&::-webkit-slider-thumb]:appearance-none
-                    [&::-webkit-slider-thumb]:h-4
-                    [&::-webkit-slider-thumb]:w-4
-                    [&::-webkit-slider-thumb]:rounded-full
-                    [&::-webkit-slider-thumb]:bg-gray-500"
-                min={from}
-                max={to}
-                step={1}
-                value={currentSize}
-                onChange={handleChange}
-            />
-        </div>
-    </div>
+    return <BaseSetting title={title}>
+        <input
+            type="text"
+            value={currentSize}
+            className="bg-gray-800 px-2 w-16"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+    </BaseSetting>
 }

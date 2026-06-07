@@ -13,7 +13,7 @@ export const BodyElement = ({ element } : Props) => {
     const handleClick = () => dispatch(selectElement(null));
     
     return <div 
-        className="flex-1 min-w-0 flex flex-col gap-2"
+        className="flex-1 min-w-0 flex flex-col gap-2 pb-4"
         style={{
             backgroundColor: element.background,
         }}

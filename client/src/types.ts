@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { SERVER_URL } from "./constants";
 
 export type Hex = `#${string}`;
@@ -8,4 +9,8 @@ export type ImageUrl = `${typeof SERVER_URL}/${string}.png`
                     | `${typeof SERVER_URL}/${string}.svg`
                     | `${typeof SERVER_URL}/${string}.webp`
 export type Route = `/${string}`;
-export type TextAlign = "left" | "right" | "center";
+export type TextAlign = "left" | "right" | "center" | "justify";
+export type SettingChoise = {
+    visual: ReactNode;
+    value: string;
+}

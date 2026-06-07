@@ -62,6 +62,7 @@ export const TextElement = ({ element, onMouseDown, onMouseUp } : Props) => {
             fontSize: element.size,
             color: element.color,
             textAlign: element.align,
+            fontFamily: element.font
         }}
         onDoubleClick={handleDoubleClick}
         >

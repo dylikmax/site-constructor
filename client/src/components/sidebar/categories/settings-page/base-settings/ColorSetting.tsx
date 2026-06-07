@@ -1,11 +1,42 @@
 import { useDispatch, useSelector } from "react-redux"
 import { editElement, type RootState } from "../../../../../redux"
 import { useEffect, useState } from "react"
-import type { Hex } from "../../../../../types"
+import { BaseSetting } from "./BaseSetting";
+import { HexAlphaColorPicker } from "react-colorful";
+import { PlusIcon } from "../../../../../assets/icons";
 
 interface Props {
     propName: string;
     title: string
+}
+
+interface ModalProps {
+    currentColor: string;
+    handleChange: (color: string) => void
+    handleChangeEnd: (color: string) => void
+    handleClose: () => void
+}
+
+const ModalColorChoise = ({ currentColor, handleChange, handleChangeEnd, handleClose } : ModalProps) => {
+    return <div className="absolute top-[76px]">
+        <div className="p-2 bg-gray-800 rounded-lg flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+                Choose your color
+                <div onClick={handleClose}>
+                    <PlusIcon 
+                        color="white" 
+                        size={20} 
+                        className="transform rotate-45 cursor-pointer"
+                    />
+                </div>
+            </div>
+            <HexAlphaColorPicker   
+                color={currentColor}
+                onChange={handleChange}
+                onChangeEnd={handleChangeEnd}
+            />
+        </div>
+    </div>
 }
 
 export const ColorSetting = ({ propName, title } : Props) => {
@@ -15,8 +46,9 @@ export const ColorSetting = ({ propName, title } : Props) => {
         return <></>
     }
 
-    const value = element[propName as keyof typeof element] as Hex
+    const value = element[propName as keyof typeof element] as string
 
+    const [isOpened, setIsOpened] = useState(false)
     const [currentColor, setCurrentColor] = useState(value);
     const dispatch = useDispatch();
 
@@ -24,27 +56,29 @@ export const ColorSetting = ({ propName, title } : Props) => {
         setCurrentColor(value);
     }, [element])
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrentColor(e.target.value as Hex);
-        dispatch(editElement({ ...element, [propName]: e.target.value }))
+    const handleChangeEnd = (newColor: string) => {
+        setCurrentColor(newColor);
+        dispatch(editElement({ ...element, [propName]: newColor }))
     }
 
-    return <div className="bg-gray-800 p-2 rounded-lg flex flex-col gap-2">
-        <h4 className="font-bold text-lg">{title}</h4>
-        <div className="flex items-center gap-2">
-            <input 
-                type="color" 
-                className="
-                    w-10 h-10
-                    [&::-webkit-color-swatch]:border-none
-                    [&::-webkit-color-swatch-wrapper]:p-0
-                    rounded-lg
-                    cursor-pointer
-                "
-                value={currentColor}
-                onChange={handleChange}
-            />
+    return <div className="relative">
+        <BaseSetting title={title}>
+            <div className="flex items-center gap-2">
+                <div 
+                    onClick={() => setIsOpened(!isOpened)}
+                    className="w-6 h-6 rounded cursor-pointer"
+                    style={{
+                        backgroundColor: currentColor
+                    }}
+                ></div>
+            </div>
             {currentColor.toUpperCase()}
+        </BaseSetting>
+                {isOpened ? <ModalColorChoise
+                    currentColor={currentColor}
+                    handleChange={handleChangeEnd}
+                    handleChangeEnd={handleChangeEnd}
+                    handleClose={() => setIsOpened(false)}
+                /> : <></>}
         </div>
-    </div>
 }

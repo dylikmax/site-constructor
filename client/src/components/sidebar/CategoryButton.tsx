@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const CategoryButton = ({ isActive, icon, onClick } : Props) => {
-    return <div className={clsx("p-3",
+    return <div className={clsx("p-2",
         {
             "bg-gray-600": isActive,
             "cursor-pointer hover:bg-gray-500 hover:duration-100": !isActive

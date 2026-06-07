@@ -7,4 +7,5 @@ export interface Text extends EditorElement {
     color: Hex;
     size: number;
     align: TextAlign;
+    font: string;
 }

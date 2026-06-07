@@ -8,7 +8,7 @@ interface Props {
 export const ContainerElement = ({ element }: Props) => {
   return (
     <div
-      className="p-3 grid gap-2"
+      className="p-3 grid gap-2 h-full w-full"
       style={{
         backgroundColor: element.background,
         minHeight: 50,
