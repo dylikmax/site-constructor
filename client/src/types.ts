@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { SERVER_URL } from "./constants";
 
-export type Hex = `#${string}`;
 export type ImageUrl = `${typeof SERVER_URL}/${string}.png` 
                     | `${typeof SERVER_URL}/${string}.jpg`
                     | `${typeof SERVER_URL}/${string}.jpeg`
@@ -14,3 +13,5 @@ export type SettingChoise = {
     visual: ReactNode;
     value: string;
 }
+
+export type ModalName = "color" | "size" | "backgroundColor" | null

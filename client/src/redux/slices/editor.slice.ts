@@ -6,6 +6,7 @@ import {
 import type { EditorElement, Body } from "../../elements";
 import { api } from "../../api/client";
 import type { ProjectInterface } from "../../projects/project.interface";
+import type { ModalName } from "../../types";
 
 interface ProjectApiResponse {
   id: number;
@@ -21,6 +22,7 @@ interface EditorState {
   isLoading: boolean;
   error: string | null;
   project: ProjectInterface
+  activeModal: ModalName;
 }
 
 type Result<T> = { success: true; value: T } | { success: false };
@@ -39,7 +41,9 @@ const initialState: EditorState = {
   project: {
     name: "",
     isActive: false,
-    url: "",}
+    url: ""
+  },
+  activeModal: null
 };
 
 interface AddMoveElementPayload {
@@ -223,6 +227,7 @@ export const editorSlice = createSlice({
       state.bodyElement = addResult.value as Body;
     },
     selectElement: (state, action: PayloadAction<EditorElement | null>) => {
+      state.activeModal = null
       state.selectedElement = selectElementRecursive(state.bodyElement, action);
     },
     updateProjectMeta: (
@@ -235,6 +240,12 @@ export const editorSlice = createSlice({
     changeAccess: (state) => {
       state.project.isActive = !state.project.isActive;
     },
+    openModal: (state, action: PayloadAction<ModalName>) => {
+      state.activeModal = action.payload
+    },
+    closeModal: (state) => {
+      state.activeModal = null
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -267,5 +278,7 @@ export const {
   selectElement,
   updateProjectMeta,
   changeAccess,
+  openModal,
+  closeModal
 } = editorSlice.actions;
 export default editorSlice.reducer;
