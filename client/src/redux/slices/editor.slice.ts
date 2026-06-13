@@ -130,10 +130,10 @@ const addElementRecursive = (
 
 const editElementRecursive = (
   element: EditorElement,
-  action: PayloadAction<EditorElement>,
+  action: PayloadAction<Partial<EditorElement>>,
 ): EditorElement => {
   if (element.uuid === action.payload.uuid) {
-    return { ...action.payload };
+    return { ...element, ...action.payload };
   } else if ("content" in element && Array.isArray(element.content)) {
     return {
       ...element,
@@ -196,11 +196,18 @@ export const editorSlice = createSlice({
 
       state.bodyElement = result.value as Body;
     },
-    editElement: (state, action: PayloadAction<EditorElement>) => {
+    editElement: (state, action: PayloadAction<Partial<EditorElement>>) => {
       state.bodyElement = editElementRecursive(
         state.bodyElement,
         action,
       ) as Body;
+
+      if (state.selectedElement && state.selectedElement.uuid === action.payload.uuid) {
+        state.selectedElement = {
+        ...state.selectedElement,
+        ...action.payload,
+      };
+  }
     },
     deleteElement: (state, action: PayloadAction<EditorElement>) => {
       state.bodyElement = deleteElementRecursive(

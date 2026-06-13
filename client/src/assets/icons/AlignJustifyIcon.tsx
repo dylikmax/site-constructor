@@ -1,0 +1,7 @@
+import type { IconProps } from "./icon-props.interface"
+
+export const AlignJustifyIcon = ({ size, color, className } : IconProps) => {
+    return <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 10H21M3 14H21M3 18H21M3 6H21" stroke={color} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+}

@@ -9,9 +9,10 @@ export type ImageUrl = `${typeof SERVER_URL}/${string}.png`
                     | `${typeof SERVER_URL}/${string}.webp`
 export type Route = `/${string}`;
 export type TextAlign = "left" | "right" | "center" | "justify";
-export type SettingChoise = {
+export type SettingChoice<T> = {
+    id: number;
     visual: ReactNode;
-    value: string;
+    value: T;
 }
 
 export type ModalName = "color" | "size" | "backgroundColor" | null

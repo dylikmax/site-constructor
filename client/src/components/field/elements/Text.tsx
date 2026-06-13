@@ -53,7 +53,7 @@ export const TextElement = ({ element, onMouseDown, onMouseUp } : Props) => {
 
     const handleBlur = () => {
         setIsChanging(false);
-        dispatch(editElement({ ...element, content: value }))
+        dispatch(editElement({ uuid: element.uuid, content: value }))
     }
 
     return <div 

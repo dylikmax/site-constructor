@@ -6,3 +6,7 @@ export { ArrowIcon } from "./ArrowIcon";
 export { SettingsIcon } from "./SettingsIcon";
 export { TrashIcon } from "./TrashIcon";
 export { ImageIcon } from "./ImageIcon";
+export { AlignLeftIcon } from "./AlignLeftIcon";
+export { AlignRightIcon } from "./AlignRightIcon";
+export { AlignCenterIcon } from "./AlignCenterIcon";
+export { AlignJustifyIcon } from "./AlignJustifyIcon";
